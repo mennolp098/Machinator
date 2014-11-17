@@ -14,7 +14,7 @@ public class BulletController : MonoBehaviour {
 	{
 		if(other.transform.tag == "Enemy")
 		{
-			float _dmg = GameObject.FindGameObjectWithTag("Player").GetComponent<TowerController>().attackDamage;
+			float _dmg = GameObject.FindGameObjectWithTag("Player").GetComponent<TowerController>().GetAttackDamage();
 			other.gameObject.GetComponent<EnemyBehavior>().getDmg(_dmg);
 			Instantiate(explosion,transform.position,transform.rotation);
 			Destroy(this.gameObject);

@@ -5,18 +5,24 @@ public class BulletController : MonoBehaviour {
 	public float destroyTime;
 	public float speed;
 	public GameObject explosion;
+	private float damage;
 	// Use this for initialization
 	void Start () 
 	{
 		Destroy(gameObject, destroyTime);
 	}
+	public void SetDamage(float dmg)
+	{
+		damage = dmg;
+	}
 	void OnTriggerEnter(Collider other) 
 	{
 		if(other.transform.tag == "Enemy")
 		{
-			float _dmg = GameObject.FindGameObjectWithTag("Player").GetComponent<TowerController>().GetAttackDamage();
-			other.gameObject.GetComponent<EnemyBehavior>().getDmg(_dmg);
-			Instantiate(explosion,transform.position,transform.rotation);
+			Transform explosionParent = GameObject.FindGameObjectWithTag("Explosions").transform;
+			other.gameObject.GetComponent<EnemyBehavior>().getDmg(damage);
+			GameObject newExplosion = Instantiate(explosion,transform.position,transform.rotation) as GameObject;
+			newExplosion.transform.parent = explosionParent;
 			Destroy(this.gameObject);
 		}
 	}

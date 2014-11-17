@@ -8,7 +8,7 @@ public class TowerController : MonoBehaviour {
 	protected float attackDamage = 0f;
 	protected float rotationSpeed = 7f;
 	protected float requiredMaterials = 0f;
-	protected float requiredHits = 0f;
+	protected float requiredHits = 3f;
 	protected bool isComplete = false;
 	protected float totalHits = 0f;
 
@@ -107,6 +107,7 @@ public class TowerController : MonoBehaviour {
 		_shootCoolDown = Time.time + shootCooldown;
 		GameObject newBullet = Instantiate (bullet, spawnpoint.position, spawnpoint.rotation) as GameObject;
 		newBullet.transform.parent = GameObject.FindGameObjectWithTag("Bullets").transform;
+		newBullet.GetComponent<BulletController>().SetDamage(attackDamage);
 	}
 	public void AddDamage(float damage)
 	{

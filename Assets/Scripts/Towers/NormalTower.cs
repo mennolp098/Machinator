@@ -10,4 +10,11 @@ public class NormalTower : TowerController {
 		requiredHits = 3f;
 		requiredMaterials = 100f;
 	}
+	protected override void Upgrade ()
+	{
+		base.Upgrade ();
+		requiredMaterials += 50f;
+		attackDamage += 3f;
+		shootCooldown -= 0.1f;
+	}
 }

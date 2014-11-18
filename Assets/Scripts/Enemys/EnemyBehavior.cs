@@ -51,7 +51,7 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
                 
 				if(target == null)
 				{
-					getDmg(1000);
+					GetDmg(1000);
 				}
                 else
                 {
@@ -60,7 +60,11 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 			}
 		}
 	}
-	public void getDmg(float dmg)
+	public void FreezeMe()
+	{
+		//TODO: NavMesh Acceleration slow
+	}
+	public void GetDmg(float dmg)
 	{
 		health -= dmg;
 		if(health <= 0)

@@ -20,7 +20,7 @@ public class BulletController : MonoBehaviour {
 		if(other.transform.tag == "Enemy")
 		{
 			Transform explosionParent = GameObject.FindGameObjectWithTag("Explosions").transform;
-			other.gameObject.GetComponent<EnemyBehavior>().getDmg(damage);
+			other.gameObject.GetComponent<EnemyBehavior>().GetDmg(damage);
 			GameObject newExplosion = Instantiate(explosion,transform.position,transform.rotation) as GameObject;
 			newExplosion.transform.parent = explosionParent;
 			Destroy(this.gameObject);

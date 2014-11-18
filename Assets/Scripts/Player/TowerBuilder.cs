@@ -28,16 +28,19 @@ public class TowerBuilder : MonoBehaviour {
 					if(hit.distance <= 2f)
 					{
 						hit.transform.GetComponent<TowerController>().HitTurret();
+						Debug.Log("Hitting tower");
 					}
 				}
 			}
-			Debug.Log("swing 1");
 			Invoke("StopSwing", 1f);
 		} else if(Input.GetMouseButtonDown(0) && _isBuilding)
 		{
-			Instantiate(allTowers[_towerToBuild], _currentTower.transform.position,_currentTower.transform.rotation);
-			Destroy(_currentTower.gameObject);
-			_isBuilding = false;
+			if(_currentTower.GetComponent<BuildTowerBehavior>().buildAble)
+			{
+				Instantiate(allTowers[_towerToBuild], _currentTower.transform.position,_currentTower.transform.rotation);
+				Destroy(_currentTower.gameObject);
+				_isBuilding = false;
+			}
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha1) && !_isBuilding)
 		{
@@ -56,8 +59,11 @@ public class TowerBuilder : MonoBehaviour {
 		{
 			Vector3 newSpawnPointPos = spawnPoint.position;
 			newSpawnPointPos.y = 1f;
+			Quaternion newRot = spawnPoint.rotation;
+			newRot.z = 0;
+			newRot.x = 0;
 			_currentTower.transform.position = newSpawnPointPos;
-			_currentTower.transform.rotation = spawnPoint.rotation;
+			_currentTower.transform.rotation = newRot;
 		}
 	}
 	private void StopSwing()

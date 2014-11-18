@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class MouseLook : MonoBehaviour {
+	public Texture2D cursorTexture;
 
 	private  enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
     private RotationAxes axes = RotationAxes.MouseXAndY;
@@ -16,6 +17,12 @@ public class MouseLook : MonoBehaviour {
 
     private float rotationY = 0F;
     private float speed = 3;
+
+
+	void OnGUI()
+	{
+		GUI.DrawTexture(new Rect(Screen.width/2, Screen.height/2, 32, 32), cursorTexture);
+	}
 	void Awake()
 	{
 		Screen.lockCursor = true;

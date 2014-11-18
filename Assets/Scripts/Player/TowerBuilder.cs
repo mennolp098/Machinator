@@ -10,11 +10,13 @@ public class TowerBuilder : MonoBehaviour {
 
 	private int _towerToBuild;
 	private bool _isBuilding = false;
+	private bool _isSwinging = false;
 	private GameObject _currentTower;
 
 	void Update () {
-		if(Input.GetMouseButtonDown(0) && !_isBuilding)
+		if(Input.GetMouseButton(0) && !_isBuilding && !_isSwinging)
 		{
+			_isSwinging = true;
 			RaycastHit hit;
 			Ray ray;
 			
@@ -23,12 +25,14 @@ public class TowerBuilder : MonoBehaviour {
 			{
 				if(hit.transform.tag == "Tower")
 				{
-					if(hit.distance <= 0.8f)
+					if(hit.distance <= 2f)
 					{
 						hit.transform.GetComponent<TowerController>().HitTurret();
 					}
 				}
 			}
+			Debug.Log("swing 1");
+			Invoke("StopSwing", 1f);
 		} else if(Input.GetMouseButtonDown(0) && _isBuilding)
 		{
 			Instantiate(allTowers[_towerToBuild], _currentTower.transform.position,_currentTower.transform.rotation);
@@ -55,6 +59,10 @@ public class TowerBuilder : MonoBehaviour {
 			_currentTower.transform.position = newSpawnPointPos;
 			_currentTower.transform.rotation = spawnPoint.rotation;
 		}
+	}
+	private void StopSwing()
+	{
+		_isSwinging = false;
 	}
 	private void BuildTower(int towerSort)
 	{

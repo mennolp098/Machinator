@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TowerBuilder : MonoBehaviour {
 
-	public GameObject tower;
+	public GameObject buildTower;
 	public Transform spawnPoint;
 
 	public GameObject[] allTowers = new GameObject[0];
@@ -11,12 +11,7 @@ public class TowerBuilder : MonoBehaviour {
 	private int _towerToBuild;
 	private bool _isBuilding = false;
 	private GameObject _currentTower;
-	private Color newColor;
 
-	void Start(){
-		newColor = Color.white;
-		newColor.a = 0.5f;
-	}
 	void Update () {
 		if(Input.GetMouseButtonDown(0) && !_isBuilding)
 		{
@@ -28,7 +23,7 @@ public class TowerBuilder : MonoBehaviour {
 			{
 				if(hit.transform.tag == "Tower")
 				{
-					if(hit.distance <= 4f)
+					if(hit.distance <= 0.8f)
 					{
 						hit.transform.GetComponent<TowerController>().HitTurret();
 					}
@@ -55,12 +50,15 @@ public class TowerBuilder : MonoBehaviour {
 		}
 		if(_isBuilding)
 		{
-			_currentTower.transform.position = spawnPoint.position;
+			Vector3 newSpawnPointPos = spawnPoint.position;
+			newSpawnPointPos.y = 1f;
+			_currentTower.transform.position = newSpawnPointPos;
+			_currentTower.transform.rotation = spawnPoint.rotation;
 		}
 	}
 	private void BuildTower(int towerSort)
 	{
-		_currentTower = Instantiate(tower, Vector3.zero, Quaternion.identity) as GameObject;
+		_currentTower = Instantiate(buildTower, Vector3.zero, Quaternion.identity) as GameObject;
 		_isBuilding = true;
 		_towerToBuild = towerSort;
 	}

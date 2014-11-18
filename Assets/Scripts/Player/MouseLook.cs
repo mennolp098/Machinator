@@ -8,14 +8,18 @@ public class MouseLook : MonoBehaviour {
     private float sensitivityX = 15F;
     private float sensitivityY = 15F;
 
-    private float minimumX = -360F;
-    private float maximumX = 360F;
+    //private float minimumX = -360F;
+    //private float maximumX = 360F;
 
     private float minimumY = -30F;
     private float maximumY = 30F;
 
     private float rotationY = 0F;
-    private float speed = 100;
+    private float speed = 3;
+	void Awake()
+	{
+		Screen.lockCursor = true;
+	}
     void Start()
     {
         if (GetComponent<Rigidbody>())
@@ -23,9 +27,16 @@ public class MouseLook : MonoBehaviour {
     }
 	void Update ()
 	{
-        float directionX = Input.GetAxis("Vertical");
-
-        this.transform.position = transform.position + transform.forward * directionX * Time.deltaTime;
+        float directionX = Input.GetAxis ("Horizontal");
+		float directionY = Input.GetAxis ("Vertical");
+		if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+		{
+			transform.position += transform.forward*directionY * speed * Time.deltaTime;
+		}  
+		if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+		{
+			transform.position += transform.right*directionX * speed * Time.deltaTime;
+		}
 		if (axes == RotationAxes.MouseXAndY)
 		{
 			float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;

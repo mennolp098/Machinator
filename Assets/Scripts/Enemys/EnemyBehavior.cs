@@ -13,6 +13,8 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	public float health = 10;
 	public Transform thisTransform;
 	public int sort;
+
+    private NavMeshAgent _navMesh;
 	public int CompareTo(EnemyBehavior other)
 	{
 		if(this.health < other.health)
@@ -34,22 +36,27 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 		thisTransform = this.transform;
 		TimeAdded = DateTime.Now;
 		isOnStage = true;
+        _navMesh = GetComponent<NavMeshAgent>();
+        _navMesh.SetDestination(target.transform.position);
 	}
 	void Update () {
 		if(target)
 		{
-			transform.LookAt(target.transform);
-			transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed);
-			if(Vector3.Distance (this.transform.position, target.transform.position) < 0.5f)
+			if(Vector3.Distance (this.transform.position, target.transform.position) < 1.5f)
 			{
 				counter++;
 				var newWaypointName = "Waypoint-" + counter;
 				GameObject newWaypoint = GameObject.Find(newWaypointName);
 				target = newWaypoint;
+                
 				if(target == null)
 				{
 					getDmg(1000);
 				}
+                else
+                {
+                    _navMesh.SetDestination(target.transform.position);
+                }
 			}
 		}
 	}

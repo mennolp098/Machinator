@@ -12,10 +12,13 @@ public class TowerController : MonoBehaviour {
 	protected bool isComplete = false;
 	protected float totalHits = 0f;
 
+	public Animator _animator;
 	private List<EnemyBehavior> _enemyScripts = new List<EnemyBehavior>();
 	private float _shootCoolDown = 0f;
 
-	public GameObject bullet;
+	public GameObject bulletPrefab;
+	public GameObject fireSmokePrefab;
+	public Transform cannon;
 	public Transform spawnpoint;
 	void Update() 
 	{
@@ -27,9 +30,9 @@ public class TowerController : MonoBehaviour {
 				{
 					if(_enemyScripts[0].thisTransform)
 					{
-						Vector3 relativePos = _enemyScripts[0].thisTransform.position - transform.position;
+						Vector3 relativePos = _enemyScripts[0].thisTransform.position - cannon.position;
 						Quaternion enemyLookAt = Quaternion.LookRotation(relativePos);
-						this.transform.rotation = Quaternion.Slerp(transform.rotation, enemyLookAt, Time.deltaTime * rotationSpeed);
+						cannon.rotation = Quaternion.Slerp(cannon.rotation, enemyLookAt, Time.deltaTime * rotationSpeed);
 						if (Time.time > _shootCoolDown) 
 						{
 							Shoot ();
@@ -56,6 +59,7 @@ public class TowerController : MonoBehaviour {
 	}
 	public void HitTurret()
 	{
+		Debug.Log("Building turret");
 		MaterialHandler currentMaterialScript = GameObject.FindGameObjectWithTag("Player").GetComponent<MaterialHandler>();
 		float currentMaterials = currentMaterialScript.GetMaterials();
 		if(currentMaterials >= requiredMaterials)
@@ -105,9 +109,14 @@ public class TowerController : MonoBehaviour {
 	void Shoot() 
 	{
 		_shootCoolDown = Time.time + shootCooldown;
-		GameObject newBullet = Instantiate (bullet, spawnpoint.position, spawnpoint.rotation) as GameObject;
+		Instantiate(fireSmokePrefab, spawnpoint.position,spawnpoint.rotation);
+
+		GameObject newBullet = Instantiate (bulletPrefab, spawnpoint.position, spawnpoint.rotation) as GameObject;
 		newBullet.transform.parent = GameObject.FindGameObjectWithTag("Bullets").transform;
 		newBullet.GetComponent<BulletController>().SetDamage(attackDamage);
+
+		_animator.SetTrigger("shoot");
+		
 	}
 	public void AddDamage(float damage)
 	{

@@ -42,7 +42,7 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	void Update () {
 		if(target)
 		{
-			if(Vector3.Distance (this.transform.position, target.transform.position) < 1.5f)
+			if(Vector2.Distance (new Vector2(transform.position.x,transform.position.z), new Vector2(target.transform.position.x,target.transform.position.z)) < 1.5f)
 			{
 				counter++;
 				var newWaypointName = "Waypoint-" + counter;

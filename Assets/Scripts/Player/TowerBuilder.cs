@@ -20,7 +20,7 @@ public class TowerBuilder : MonoBehaviour {
 			RaycastHit hit;
 			Ray ray;
 			
-			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			ray = Camera.main.ScreenPointToRay(new Vector2(Screen.width/2,Screen.height/2));
 			if(Physics.Raycast(ray, out hit))
 			{
 				if(hit.transform.tag == "Tower")
@@ -37,7 +37,9 @@ public class TowerBuilder : MonoBehaviour {
 		{
 			if(_currentTower.GetComponent<BuildTowerBehavior>().buildAble)
 			{
-				Instantiate(allTowers[_towerToBuild], _currentTower.transform.position,_currentTower.transform.rotation);
+				Vector3 spawnPos = _currentTower.transform.position;
+				spawnPos.y = 0.5f;
+				Instantiate(allTowers[_towerToBuild], spawnPos,_currentTower.transform.rotation);
 				Destroy(_currentTower.gameObject);
 				_isBuilding = false;
 			}

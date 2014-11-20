@@ -17,7 +17,7 @@ public class HealthBar : MonoBehaviour {
 	}
 	
 	void Update() {
-		position = Camera.main.WorldToScreenPoint(transform.position);
+		position = Camera.main.WorldToViewportPoint(transform.position);
 		enemyHealth = gameObject.GetComponentInParent<EnemyBehavior>().health;
 	}
 	

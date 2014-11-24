@@ -8,10 +8,14 @@ public class TowerBuilder : MonoBehaviour {
 
 	public GameObject[] allTowers = new GameObject[0];
 
-	private int _towerToBuild;
+	private int _towerToBuild = -1;
 	private bool _isBuilding = false;
 	private bool _isSwinging = false;
 	private GameObject _currentTower;
+    [SerializeField]
+    private Texture2D[] UIButtons;
+    [SerializeField]
+    private Texture2D UiBack;
 
 	void Update () {
 		if(Input.GetMouseButton(0) && !_isBuilding && !_isSwinging)
@@ -44,6 +48,7 @@ public class TowerBuilder : MonoBehaviour {
 				newTower.transform.parent = hierachyTowers.transform;
 				Destroy(_currentTower.gameObject);
 				_isBuilding = false;
+                _towerToBuild = -1;
 			}
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha1))
@@ -68,6 +73,7 @@ public class TowerBuilder : MonoBehaviour {
 			newRot.x = 0;
 			_currentTower.transform.position = newSpawnPointPos;
 			_currentTower.transform.rotation = newRot;
+           
 		}
 	}
 	private void StopSwing()
@@ -86,4 +92,12 @@ public class TowerBuilder : MonoBehaviour {
 			_currentTower = Instantiate(buildTowers[_towerToBuild], Vector3.zero, Quaternion.identity) as GameObject;
 		}
 	}
+    void OnGUI()
+    {
+        GUI.DrawTexture(new Rect(20, 20, UiBack.width / 2, UiBack.height / 2), UiBack);
+        if (_towerToBuild >= 0)
+        {
+            GUI.DrawTexture(new Rect(36 + (60 * _towerToBuild), 34, 40, 30), UIButtons[_towerToBuild]);
+        }
+    }
 }

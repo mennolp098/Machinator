@@ -60,6 +60,14 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 			}
 		}
 	}
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Base")
+        {
+            collision.gameObject.GetComponent<FortScript>().hit();
+            GetDmg(1000);
+        }
+    }
 	public void FreezeMe()
 	{
 		//TODO: NavMesh Acceleration slow

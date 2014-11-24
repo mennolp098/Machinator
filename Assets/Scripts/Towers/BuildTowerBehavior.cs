@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public class BuildTowerBehavior : MonoBehaviour {
 	public bool buildAble;
-	private int counter;
-	private List<GameObject> _CurrentObjects = new List<GameObject>();
+	private bool hitting = false;
 	private List<Material> allChildrenMaterials = new List<Material>();
 	void Start()
 	{
@@ -17,7 +16,18 @@ public class BuildTowerBehavior : MonoBehaviour {
 	}
 	void Update()
 	{
-		if(_CurrentObjects.Count == 0)
+		Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, 1f);
+		for (int i = 0; i < hitColliders.Length; i++) {
+			if(hitColliders[i].transform.tag != "Floor" && hitColliders[i].transform.tag != "Player" && hitColliders[i].transform.tag
+			    != "BuildTower" && !hitColliders[i].isTrigger)
+			{
+				hitting = true;
+				break;
+			} else {
+				hitting = false;
+			}
+		}
+		if(!hitting)
 		{
 			Color newColor = Color.white;
 			newColor.a = 0.5f;
@@ -34,47 +44,6 @@ public class BuildTowerBehavior : MonoBehaviour {
 				material.color = newColor;
 			}
 			buildAble = false;
-		}
-		foreach(GameObject obstacle in _CurrentObjects)
-		{
-			if(obstacle == null)
-			{
-				_CurrentObjects.Remove(obstacle);
-			}
-		}
-	}
-	void OnTriggerStay(Collider other)
-	{
-		Debug.Log(other.transform.tag);
-		if(other.transform.tag != "Floor" && other.transform.tag != "Player")
-		{
-			bool notAdded = true;
-			foreach(GameObject obstacle in _CurrentObjects)
-			{
-				if(other.gameObject == obstacle)
-				{
-					notAdded = false;
-					break;
-				}
-			}
-			if(notAdded)
-			{
-				_CurrentObjects.Add(other.gameObject);
-			}
-			if(_CurrentObjects.Count == 0)
-			{
-				_CurrentObjects.Add(other.gameObject);
-			}
-		}
-	}
-	void OnTriggerExit(Collider other)
-	{
-		foreach(GameObject obstacle in _CurrentObjects)
-		{
-			if(other.gameObject == obstacle)
-			{
-				_CurrentObjects.Remove(other.gameObject);
-			}
 		}
 	}
 }

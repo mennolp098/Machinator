@@ -6,6 +6,7 @@ public class BulletController : MonoBehaviour {
 	public float speed;
 	public GameObject explosion;
 	private float damage;
+	private Transform target;
 	// Use this for initialization
 	void Start () 
 	{
@@ -15,9 +16,13 @@ public class BulletController : MonoBehaviour {
 	{
 		damage = dmg;
 	}
+	public void SetTarget(Transform trgt)
+	{
+		target = trgt;
+	}
 	void OnTriggerEnter(Collider other) 
 	{
-		if(other.transform.tag == "Enemy")
+		if(other.transform == target)
 		{
 			Transform explosionParent = GameObject.FindGameObjectWithTag("Explosions").transform;
 			other.gameObject.GetComponent<EnemyBehavior>().GetDmg(damage);
@@ -29,6 +34,11 @@ public class BulletController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
+		if(target != null)
+		{
+			transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+		} else {
+			transform.Translate(Vector3.forward * speed * Time.deltaTime);
+		}
 	}
 }

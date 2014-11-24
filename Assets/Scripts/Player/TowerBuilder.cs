@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TowerBuilder : MonoBehaviour {
 
-	public GameObject buildTower;
+	public GameObject[] buildTowers = new GameObject[0];
 	public Transform spawnPoint;
 
 	public GameObject[] allTowers = new GameObject[0];
@@ -16,6 +16,7 @@ public class TowerBuilder : MonoBehaviour {
 	void Update () {
 		if(Input.GetMouseButton(0) && !_isBuilding && !_isSwinging)
 		{
+			GetComponentInChildren<Animation>().Play();
 			_isSwinging = true;
 			RaycastHit hit;
 			Ray ray;
@@ -28,7 +29,6 @@ public class TowerBuilder : MonoBehaviour {
 					if(hit.distance <= 2f)
 					{
 						hit.transform.GetComponent<TowerController>().HitTurret();
-						Debug.Log("Hitting tower");
 					}
 				}
 			}
@@ -39,28 +39,30 @@ public class TowerBuilder : MonoBehaviour {
 			{
 				Vector3 spawnPos = _currentTower.transform.position;
 				spawnPos.y = 0.5f;
-				Instantiate(allTowers[_towerToBuild], spawnPos,_currentTower.transform.rotation);
+				GameObject newTower = Instantiate(allTowers[_towerToBuild], spawnPos,_currentTower.transform.rotation) as GameObject;
+				GameObject hierachyTowers = GameObject.FindGameObjectWithTag("AllTowers");
+				newTower.transform.parent = hierachyTowers.transform;
 				Destroy(_currentTower.gameObject);
 				_isBuilding = false;
 			}
 		}
-		if(Input.GetKeyDown(KeyCode.Alpha1) && !_isBuilding)
+		if(Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			BuildTower(0);
-		} else if(Input.GetKeyDown(KeyCode.Alpha2) && !_isBuilding) 
+		} else if(Input.GetKeyDown(KeyCode.Alpha2)) 
 		{
 			BuildTower(1);
-		} else if(Input.GetKeyDown(KeyCode.Alpha3) && !_isBuilding) 
+		} else if(Input.GetKeyDown(KeyCode.Alpha3)) 
 		{
 			BuildTower(2);
-		} else if(Input.GetKeyDown(KeyCode.Alpha4) && !_isBuilding) 
+		} else if(Input.GetKeyDown(KeyCode.Alpha4)) 
 		{
 			BuildTower(3);
 		}
 		if(_isBuilding)
 		{
 			Vector3 newSpawnPointPos = spawnPoint.position;
-			newSpawnPointPos.y = 1f;
+			newSpawnPointPos.y = 0.5f;
 			Quaternion newRot = spawnPoint.rotation;
 			newRot.z = 0;
 			newRot.x = 0;
@@ -74,8 +76,14 @@ public class TowerBuilder : MonoBehaviour {
 	}
 	private void BuildTower(int towerSort)
 	{
-		_currentTower = Instantiate(buildTower, Vector3.zero, Quaternion.identity) as GameObject;
 		_isBuilding = true;
 		_towerToBuild = towerSort;
+		if(_currentTower == null)
+		{
+			_currentTower = Instantiate(buildTowers[_towerToBuild], Vector3.zero, Quaternion.identity) as GameObject;
+		} else {
+			Destroy(_currentTower.gameObject);
+			_currentTower = Instantiate(buildTowers[_towerToBuild], Vector3.zero, Quaternion.identity) as GameObject;
+		}
 	}
 }

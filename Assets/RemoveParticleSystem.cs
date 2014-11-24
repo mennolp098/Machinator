@@ -6,7 +6,6 @@ public class RemoveParticleSystem : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_particleSystem = GetComponent<ParticleSystem>();
-		Debug.Log(_particleSystem.duration);
 		Invoke("removeMe", _particleSystem.duration);
 	}
 	

@@ -25,16 +25,16 @@ public class menuScript : MonoBehaviour {
     {
         if (maninMenu.activeSelf == true)
         {
-            if (GUI.Button(new Rect(650, 260, 200, 75), "", GUIStyle.none))
+            if (GUI.Button(new Rect(Screen.width /2, 260, 200, 75), ""))
             {
                 Application.LoadLevel("towerdefence");
             }
-            if (GUI.Button(new Rect(650, 360, 200, 75), "", GUIStyle.none))
+            if (GUI.Button(new Rect(650, 360, 200, 75), ""))
             {
                 helpMenu.SetActive(true);
                 maninMenu.SetActive(false);
             }
-            if (GUI.Button(new Rect(585, 440, 300, 75), "", GUIStyle.none))
+            if (GUI.Button(new Rect(585, 440, 300, 75), ""))
             {
                 creditzMenu.SetActive(true);
                 maninMenu.SetActive(false);

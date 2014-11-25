@@ -4,23 +4,36 @@ using System.Collections.Generic;
 using System;
 
 public class TowerController : MonoBehaviour {
+	public Animator animator;
+	public GameObject bulletPrefab;
+	public GameObject fireSmokePrefab;
+	public Transform cannon;
+	public Transform spawnpoint;
+
 	protected float shootCooldown = 0f;
 	protected float attackDamage = 0f;
 	protected float rotationSpeed = 7f;
 	protected float requiredMaterials = 0f;
 	protected float requiredHits = 3f;
+	protected float totalHits = 0f;
+	protected float totalUpgrades = 0;
 	protected bool isComplete = false;
 	protected bool isBuilded = false;
-	protected float totalHits = 0f;
-	
+	protected bool canFreeze = false;
+	protected bool canExplode = false;
+	protected List<Material> allChildrenMaterials = new List<Material>();
+
 	private List<EnemyBehavior> _enemyScripts = new List<EnemyBehavior>();
 	private float _shootCoolDown = 0f;
-
-	public Animator _animator;
-	public GameObject bulletPrefab;
-	public GameObject fireSmokePrefab;
-	public Transform cannon;
-	public Transform spawnpoint;
+	
+	protected virtual void Start()
+	{
+		Renderer[] allChildrenRenderers = GetComponentsInChildren<Renderer>();
+		foreach(Renderer renderer in allChildrenRenderers)
+		{
+			allChildrenMaterials.Add(renderer.material);
+		}
+	}
 	void Update() 
 	{
 		if(!isComplete)
@@ -75,10 +88,13 @@ public class TowerController : MonoBehaviour {
 				}
 			}
 			//check if possible to upgrade
-			if(requiredHits <= totalHits)
+			if(totalUpgrades != 3)
 			{
-				requiredHits += 3f;
-				Upgrade();
+				if(requiredHits <= totalHits)
+				{
+					requiredHits += 3f;
+					Upgrade();
+				}
 			}
 		}
 	}
@@ -87,7 +103,7 @@ public class TowerController : MonoBehaviour {
 		//hit te turret to add total hits
 		MaterialHandler currentMaterialScript = GameObject.FindGameObjectWithTag("Player").GetComponent<MaterialHandler>();
 		float currentMaterials = currentMaterialScript.GetMaterials();
-		if(currentMaterials >= requiredMaterials)
+		if(currentMaterials >= requiredMaterials && totalUpgrades != 3)
 		{
 			currentMaterialScript.AddMaterials(-requiredMaterials);
 			totalHits += 1;
@@ -96,6 +112,12 @@ public class TowerController : MonoBehaviour {
 	//upgrade function to upgrade the tower
 	protected virtual void Upgrade()
 	{
+		if(totalUpgrades == 3)
+			BecomeSuper();
+	}
+	protected virtual void BecomeSuper()
+	{
+		Debug.Log("i are super");
 	}
 	public float GetAttackDamage(){
 		return attackDamage;
@@ -144,8 +166,12 @@ public class TowerController : MonoBehaviour {
 		BulletController newBulletScript = newBullet.GetComponent<BulletController>();
 		newBulletScript.SetDamage(attackDamage);
 		newBulletScript.SetTarget(_enemyScripts[0].thisTransform);
+		if(canFreeze)
+			newBulletScript.SetFreeze();
+		if(canExplode)
+			newBulletScript.SetExplosion();
 
-		_animator.SetTrigger("shoot");
+		animator.SetTrigger("shoot");
 		audio.Play();
 	}
 	public void AddDamage(float damage)

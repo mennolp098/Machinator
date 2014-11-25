@@ -4,7 +4,8 @@ using System.Collections;
 public class NormalTower : TowerController {
 
 	// Use this for initialization
-	void Start () {
+	protected override void Start () {
+		base.Start();
 		shootCooldown = 0.5f;
 		attackDamage = 3f;
 		requiredHits = 3f;
@@ -12,9 +13,21 @@ public class NormalTower : TowerController {
 	}
 	protected override void Upgrade ()
 	{
-		base.Upgrade ();
+		totalUpgrades++;
 		requiredMaterials += 50f;
 		attackDamage += 3f;
 		shootCooldown -= 0.1f;
+		base.Upgrade ();
+	}
+	protected override void BecomeSuper ()
+	{
+		base.BecomeSuper ();
+		foreach(Material material in allChildrenMaterials)
+		{
+			Color newColor = material.color;
+			newColor.b += 0.5f;
+			material.color = newColor;
+		}
+		canFreeze = true;
 	}
 }

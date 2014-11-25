@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using System;
 
 public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
-	protected float speed = 0.03f;
+	protected float _speed = 0.03f;
+	protected float _myMaterials = 0;
+
 	private GameObject target;
 	private float counter = 1;
 	private DateTime TimeAdded;
+	private bool isFreezed;
 
 	public bool isOnStage;
 	public float health = 10;
@@ -15,6 +18,7 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	public int sort;
 
     private NavMeshAgent _navMesh;
+	private float oldspeed;
 	public int CompareTo(EnemyBehavior other)
 	{
 		if(this.health < other.health)
@@ -38,6 +42,8 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 		isOnStage = true;
         _navMesh = GetComponent<NavMeshAgent>();
         _navMesh.SetDestination(target.transform.position);
+		_navMesh.speed += _speed;
+		oldspeed = _navMesh.speed;
 	}
 	void Update () {
 		if(target)
@@ -51,7 +57,7 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
                 
 				if(target == null)
 				{
-					GetDmg(1000);
+					Debug.LogWarning("no waypoints found!");
 				}
                 else
                 {
@@ -65,18 +71,29 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
         if (collision.gameObject.tag == "Base")
         {
             collision.gameObject.GetComponent<FortScript>().hit();
-            GetDmg(1000);
+			Destroy(this.gameObject);
+			isOnStage = false;
         }
     }
 	public void FreezeMe()
 	{
-		//TODO: NavMesh Acceleration slow
+		if(!isFreezed)
+		{
+			isFreezed = true;
+			_navMesh.speed -= 0.25f;
+			Invoke("StopFreeze", 2f);
+		}
+	}
+	public void StopFreeze()
+	{
+		_navMesh.speed = oldspeed;
 	}
 	public void GetDmg(float dmg)
 	{
 		health -= dmg;
 		if(health <= 0)
 		{
+			GameObject.FindGameObjectWithTag("Player").GetComponent<MaterialHandler>().AddMaterials(_myMaterials);
 			Destroy(this.gameObject);
 			isOnStage = false;
 		}

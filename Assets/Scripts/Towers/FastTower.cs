@@ -3,7 +3,8 @@ using System.Collections;
 
 public class FastTower : TowerController {
 
-	void Start () {
+	protected override void Start () {
+		base.Start();
 		shootCooldown = 0.25f;
 		attackDamage = 2f;
 		requiredHits = 2f;
@@ -11,9 +12,14 @@ public class FastTower : TowerController {
 	}
 	protected override void Upgrade ()
 	{
-		base.Upgrade ();
+		totalUpgrades++;
 		requiredMaterials += 50f;
 		attackDamage += 3f;
 		shootCooldown -= 0.05f;
+		base.Upgrade ();
+	}
+	protected override void BecomeSuper ()
+	{
+		base.BecomeSuper ();
 	}
 }

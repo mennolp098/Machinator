@@ -6,12 +6,6 @@ public class RemoveParticleSystem : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_particleSystem = GetComponent<ParticleSystem>();
-		Invoke("removeMe", _particleSystem.duration);
-	}
-	
-	// Update is called once per frame
-	void removeMe()
-	{
-		Destroy(this.gameObject);
+		Destroy(this.gameObject, _particleSystem.duration);
 	}
 }

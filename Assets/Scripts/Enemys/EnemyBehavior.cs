@@ -8,6 +8,9 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	public float health = 10;
 	public Transform thisTransform;
 	public int sort;
+	public GameObject greenbar;
+	public GameObject redbar;
+
 
 	protected float _speed = 0.03f;
 	protected float _myMaterials = 0;
@@ -110,6 +113,8 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 		isDead = true;
 		Destroy(this.rigidbody);
 		Destroy(_navMesh);
+		Destroy(greenbar.gameObject);
+		Destroy(redbar.gameObject);
 		Destroy(this.gameObject, 4f);
 		isOnStage = false;
 	}

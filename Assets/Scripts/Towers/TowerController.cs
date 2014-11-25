@@ -45,7 +45,7 @@ public class TowerController : MonoBehaviour {
 		{
 			if(isBuilded)
 			{
-				if(cannon.eulerAngles.x <= 0f)
+				if(cannon.eulerAngles.x > 0f)
 				{
 					Vector3 cannonRot = cannon.eulerAngles;
 					cannonRot.x = 0;

@@ -96,13 +96,10 @@ public class TowerBuilder : MonoBehaviour {
 	}
     void OnGUI()
     {
-<<<<<<< HEAD
         GUI.DrawTexture(new Rect(Screen.width /2 - 150, Screen.height - UiBack.height /2, UiBack.width/2, UiBack.height/2), UiBack);
-=======
 		float totalMaterials = GetComponentInParent<MaterialHandler>().GetMaterials();
         GUI.DrawTexture(new Rect(Screen.width /2 - 150, Screen.height - UiBack.height /2, UiBack.width / 2, UiBack.height / 2), UiBack);
 		GUI.TextField(new Rect(Screen.width/2 + 50, Screen.height + UiBack.height - 150, 50,50), "" + totalMaterials, textStyle);
->>>>>>> origin/master
         if (_towerToBuild >= 0)
         {
             GUI.DrawTexture(new Rect(Screen.width / 2 - 150 + 17 + (45 * _towerToBuild), Screen.height - UiBack.height / 2 + 13, 40, 30), UIButtons[_towerToBuild]);

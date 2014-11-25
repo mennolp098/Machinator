@@ -10,6 +10,7 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	private GameObject target;
 	private float counter = 1;
 	private DateTime TimeAdded;
+	private bool isFreezed;
 
 	public bool isOnStage;
 	public float health = 10;
@@ -17,6 +18,7 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	public int sort;
 
     private NavMeshAgent _navMesh;
+	private float oldspeed;
 	public int CompareTo(EnemyBehavior other)
 	{
 		if(this.health < other.health)
@@ -40,6 +42,8 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 		isOnStage = true;
         _navMesh = GetComponent<NavMeshAgent>();
         _navMesh.SetDestination(target.transform.position);
+		_navMesh.speed += _speed;
+		oldspeed = _navMesh.speed;
 	}
 	void Update () {
 		if(target)
@@ -73,7 +77,16 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
     }
 	public void FreezeMe()
 	{
-		//TODO: NavMesh Acceleration slow
+		if(!isFreezed)
+		{
+			isFreezed = true;
+			_navMesh.speed -= 0.25f;
+			Invoke("StopFreeze", 2f);
+		}
+	}
+	public void StopFreeze()
+	{
+		_navMesh.speed = oldspeed;
 	}
 	public void GetDmg(float dmg)
 	{

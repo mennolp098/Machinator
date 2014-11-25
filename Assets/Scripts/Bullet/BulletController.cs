@@ -4,7 +4,10 @@ using System.Collections;
 public class BulletController : MonoBehaviour {
 	public float destroyTime;
 	public float speed;
+	public GameObject hitParticle;
 	public GameObject explosion;
+	private bool canFreeze;
+	private bool canExplode;
 	private float damage;
 	private Transform target;
 	// Use this for initialization
@@ -24,10 +27,19 @@ public class BulletController : MonoBehaviour {
 	{
 		if(other.transform == target)
 		{
-			Transform explosionParent = GameObject.FindGameObjectWithTag("Explosions").transform;
+			Transform explosionsParent = GameObject.FindGameObjectWithTag("Explosions").transform;
 			other.gameObject.GetComponent<EnemyBehavior>().GetDmg(damage);
-			GameObject newExplosion = Instantiate(explosion,transform.position,transform.rotation) as GameObject;
-			newExplosion.transform.parent = explosionParent;
+			GameObject newhitParticle = Instantiate(hitParticle,transform.position,transform.rotation) as GameObject;
+			newhitParticle.transform.parent = explosionsParent;
+			if(canExplode)
+			{
+				GameObject newExplosion = Instantiate(explosion,transform.position,transform.rotation) as GameObject;
+				newExplosion.transform.parent = explosionsParent;
+			}
+			else if(canFreeze)
+			{
+				other.gameObject.GetComponent<EnemyBehavior>().FreezeMe();
+			}
 			Destroy(this.gameObject);
 		}
 	}
@@ -40,5 +52,13 @@ public class BulletController : MonoBehaviour {
 		} else {
 			transform.Translate(Vector3.forward * speed * Time.deltaTime);
 		}
+	}
+	public void SetFreeze()
+	{
+		canFreeze = true;
+	}
+	public void SetExplosion()
+	{
+		canExplode = true;
 	}
 }

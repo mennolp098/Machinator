@@ -98,7 +98,7 @@ public class TowerBuilder : MonoBehaviour {
         GUI.DrawTexture(new Rect(20, 20, UiBack.width / 2, UiBack.height / 2), UiBack);
         if (_towerToBuild >= 0)
         {
-            GUI.DrawTexture(new Rect(36 +(UIButtons[0].width * _towerToBuild), 34, 40, 30), UIButtons[_towerToBuild]);
+            GUI.DrawTexture(new Rect(36 + (45 * _towerToBuild), 34, 40, 30), UIButtons[_towerToBuild]);
         }
     }
 }

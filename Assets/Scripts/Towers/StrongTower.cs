@@ -13,7 +13,7 @@ public class StrongTower : TowerController {
 	{
 		totalUpgrades++;
 		requiredMaterials += 75f;
-		attackDamage += 5f;
+		attackDamage += 1f;
 		shootCooldown -= 0.05f;
 		base.Upgrade ();
 	}

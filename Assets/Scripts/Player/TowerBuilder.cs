@@ -8,6 +8,7 @@ public class TowerBuilder : MonoBehaviour {
 	public Transform spawnPoint;
 	public GameObject[] allTowers = new GameObject[0];
 	public GUIStyle textStyle;
+	public GameObject clash;
 
 	private int _towerToBuild = -1;
 	private bool _isBuilding = false;
@@ -35,6 +36,11 @@ public class TowerBuilder : MonoBehaviour {
 					if(hit.distance <= 2f)
 					{
 						hit.transform.GetComponent<TowerController>().HitTurret();
+						Vector3 eulerRot = this.transform.eulerAngles;
+						eulerRot.y -= 180;
+						Quaternion spawnRot = Quaternion.Euler(eulerRot);
+						Instantiate(clash, hit.point, spawnRot);
+
 					}
 				}
 			}

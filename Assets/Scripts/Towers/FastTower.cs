@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class FastTower : TowerController {
-
+	public GameObject upgradedPrefab;
 	protected override void Start () {
 		base.Start();
 		shootCooldown = 0.25f;
@@ -14,12 +14,14 @@ public class FastTower : TowerController {
 	{
 		totalUpgrades++;
 		requiredMaterials += 50f;
-		attackDamage += 3f;
+		attackDamage += 0.5f;
 		shootCooldown -= 0.05f;
 		base.Upgrade ();
 	}
 	protected override void BecomeSuper ()
 	{
 		base.BecomeSuper ();
+		Instantiate(upgradedPrefab,transform.position,transform.rotation);
+		Destroy(this.gameObject);
 	}
 }

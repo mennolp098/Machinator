@@ -9,6 +9,7 @@ public class FortScript : MonoBehaviour {
     {
         if (health <= 0)
         {
+            Application.LoadLevel("lose");
             Destroy(this.gameObject);
         }
     }

@@ -146,7 +146,7 @@ public class TowerController : MonoBehaviour {
 		newBulletScript.SetTarget(_enemyScripts[0].thisTransform);
 
 		_animator.SetTrigger("shoot");
-		
+		audio.Play();
 	}
 	public void AddDamage(float damage)
 	{

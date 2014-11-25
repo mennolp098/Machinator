@@ -7,8 +7,10 @@ public class TowerController : MonoBehaviour {
 	public Animator animator;
 	public GameObject bulletPrefab;
 	public GameObject fireSmokePrefab;
+	public GameObject upgradePrefab;
 	public Transform cannon;
 	public Transform spawnpoint;
+	public AudioClip[] sounds = new AudioClip[0];
 
 	protected float shootCooldown = 0f;
 	protected float attackDamage = 0f;
@@ -28,6 +30,9 @@ public class TowerController : MonoBehaviour {
 	
 	protected virtual void Start()
 	{
+		audio.clip = sounds[0];
+		audio.Play();
+		audio.loop = true;
 		Renderer[] allChildrenRenderers = GetComponentsInChildren<Renderer>();
 		foreach(Renderer renderer in allChildrenRenderers)
 		{
@@ -47,6 +52,8 @@ public class TowerController : MonoBehaviour {
 					cannon.eulerAngles = Vector3.Slerp(cannon.eulerAngles, cannonRot, 7f * Time.deltaTime);
 				} else {
 					isComplete = true;
+					audio.Stop();
+					audio.loop = false;
 				}
 			} 
 			else if(cannon.eulerAngles.x <= 30f)
@@ -114,10 +121,10 @@ public class TowerController : MonoBehaviour {
 	{
 		if(totalUpgrades == 3)
 			BecomeSuper();
+		Instantiate(upgradePrefab,transform.position,Quaternion.identity);
 	}
 	protected virtual void BecomeSuper()
 	{
-		Debug.Log("i are super");
 	}
 	public float GetAttackDamage(){
 		return attackDamage;
@@ -172,6 +179,7 @@ public class TowerController : MonoBehaviour {
 			newBulletScript.SetExplosion();
 
 		animator.SetTrigger("shoot");
+		audio.clip = sounds[1];
 		audio.Play();
 	}
 	public void AddDamage(float damage)

@@ -62,10 +62,10 @@ public class TowerBuilder : MonoBehaviour {
 		} else if(Input.GetKeyDown(KeyCode.Alpha3)) 
 		{
 			BuildTower(2);
-		}/* else if(Input.GetKeyDown(KeyCode.Alpha4)) 
+		} else if(Input.GetKeyDown(KeyCode.Alpha4)) 
 		{
-			BuildTower(3);
-		} */
+			ClearTower();
+		}
 		if(_isBuilding)
 		{
 			Vector3 newSpawnPointPos = spawnPoint.position;
@@ -76,6 +76,15 @@ public class TowerBuilder : MonoBehaviour {
 			_currentTower.transform.position = newSpawnPointPos;
 			_currentTower.transform.rotation = newRot;
            
+		}
+	}
+	private void ClearTower()
+	{
+		if(_currentTower != null)
+		{
+			Destroy(_currentTower.gameObject);
+			_isBuilding = false;
+			_towerToBuild = -1;
 		}
 	}
 	private void StopSwing()

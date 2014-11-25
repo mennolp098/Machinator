@@ -41,16 +41,28 @@ public class menuScript : MonoBehaviour {
     {
         if (maninMenu.activeSelf == true)
         {
+<<<<<<< HEAD
             if (GUI.Button(new Rect(PlayCods.x - 100,Screen.height-PlayCods.y - 30, 200, 50), ""))
             {
                 Application.LoadLevel("towerdefence");
             }
             if (GUI.Button(new Rect(helpCods.x - 100,  Screen.height-helpCods.y -20, 200, 60), ""))
+=======
+            if (GUI.Button(new Rect(Screen.width /2 - 100, 230, 200, 75), ""))
+            {
+                Application.LoadLevel("towerdefence");
+            }
+			if (GUI.Button(new Rect(Screen.width /2 - 100, 315, 200, 75), ""))
+>>>>>>> origin/master
             {
                 helpMenu.SetActive(true);
                 maninMenu.SetActive(false);
             }
+<<<<<<< HEAD
             if (GUI.Button(new Rect(credCods.x - 150, Screen.height-credCods.y- 20 , 300, 60), ""))
+=======
+			if (GUI.Button(new Rect(Screen.width /2 - 150, 400, 300, 75), ""))
+>>>>>>> origin/master
             {
                 creditzMenu.SetActive(true);
                 maninMenu.SetActive(false);

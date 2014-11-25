@@ -8,10 +8,6 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	public float health = 10;
 	public Transform thisTransform;
 	public int sort;
-	public bool isDead;
-	public GameObject greenBar;
-	public GameObject redBar;
-
 
 	protected float _speed = 0.03f;
 	protected float _myMaterials = 0;
@@ -20,6 +16,7 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	private float counter = 1;
 	private DateTime TimeAdded;
 	private bool isFreezed;
+	private bool isDead;
     private NavMeshAgent _navMesh;
 	private float oldspeed;
 
@@ -113,8 +110,6 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 		isDead = true;
 		Destroy(this.rigidbody);
 		Destroy(_navMesh);
-		Destroy(greenBar.gameObject);
-		Destroy(redBar.gameObject);
 		Destroy(this.gameObject, 4f);
 		isOnStage = false;
 	}

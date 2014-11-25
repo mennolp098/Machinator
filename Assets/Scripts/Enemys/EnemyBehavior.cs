@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System;
 
 public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
-	protected float speed = 0.03f;
+	protected float _speed = 0.03f;
+	protected float _myMaterials = 0;
+
 	private GameObject target;
 	private float counter = 1;
 	private DateTime TimeAdded;
@@ -51,7 +53,7 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
                 
 				if(target == null)
 				{
-					GetDmg(1000);
+					Debug.LogWarning("no waypoints found!");
 				}
                 else
                 {
@@ -65,7 +67,8 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
         if (collision.gameObject.tag == "Base")
         {
             collision.gameObject.GetComponent<FortScript>().hit();
-            GetDmg(1000);
+			Destroy(this.gameObject);
+			isOnStage = false;
         }
     }
 	public void FreezeMe()
@@ -77,6 +80,7 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 		health -= dmg;
 		if(health <= 0)
 		{
+			GameObject.FindGameObjectWithTag("Player").GetComponent<MaterialHandler>().AddMaterials(_myMaterials);
 			Destroy(this.gameObject);
 			isOnStage = false;
 		}

@@ -7,7 +7,8 @@ public class StrongEnemy : EnemyBehavior {
 	protected override void Start () {
 		base.Start();
 		health = 20;
-		speed = 0.03f;
+		_myMaterials = 150f;
+		_speed = 0.03f;
 		sort = 2;
 	}
 }

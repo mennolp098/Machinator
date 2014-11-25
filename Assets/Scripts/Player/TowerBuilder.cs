@@ -6,13 +6,14 @@ public class TowerBuilder : MonoBehaviour {
 
 	public GameObject[] buildTowers = new GameObject[0];
 	public Transform spawnPoint;
-
 	public GameObject[] allTowers = new GameObject[0];
+	public GUIStyle textStyle;
 
 	private int _towerToBuild = -1;
 	private bool _isBuilding = false;
 	private bool _isSwinging = false;
 	private GameObject _currentTower;
+	
     [SerializeField]
     private Texture2D[] UIButtons;
     [SerializeField]
@@ -61,10 +62,10 @@ public class TowerBuilder : MonoBehaviour {
 		} else if(Input.GetKeyDown(KeyCode.Alpha3)) 
 		{
 			BuildTower(2);
-		} else if(Input.GetKeyDown(KeyCode.Alpha4)) 
+		}/* else if(Input.GetKeyDown(KeyCode.Alpha4)) 
 		{
 			BuildTower(3);
-		}
+		} */
 		if(_isBuilding)
 		{
 			Vector3 newSpawnPointPos = spawnPoint.position;
@@ -95,7 +96,9 @@ public class TowerBuilder : MonoBehaviour {
 	}
     void OnGUI()
     {
+		float totalMaterials = GetComponentInParent<MaterialHandler>().GetMaterials();
         GUI.DrawTexture(new Rect(Screen.width /2 - 150, Screen.height - UiBack.height /2, UiBack.width / 2, UiBack.height / 2), UiBack);
+		GUI.TextField(new Rect(Screen.width/2 + 50, Screen.height + UiBack.height - 150, 50,50), "" + totalMaterials, textStyle);
         if (_towerToBuild >= 0)
         {
             GUI.DrawTexture(new Rect(Screen.width / 2 - 150 + 17 + (45 * _towerToBuild), Screen.height - UiBack.height / 2 + 13, 40, 30), UIButtons[_towerToBuild]);

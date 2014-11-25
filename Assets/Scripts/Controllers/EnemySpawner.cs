@@ -32,6 +32,18 @@ public class EnemySpawner : MonoBehaviour {
 		int random = Random.Range (0, _enemys.Length);
 		GameObject newEnemy = Instantiate(_enemys[random].gameObject,this.transform.position,this.transform.rotation) as GameObject;
 		newEnemy.transform.parent = GameObject.FindGameObjectWithTag ("Enemys").transform;
+        if(random == 0)
+        {
+            newEnemy.GetComponent<NormalEnemy>().health += 20 * _wave;
+        }
+        if (random == 1)
+        {
+            newEnemy.GetComponent<FastEnemy>().health += 20* _wave;
+        }
+        if (random == 2)
+        {
+            newEnemy.GetComponent<StrongEnemy>().health += 50 *_wave;
+        }
         if(_currentEnemys == _maxEnemys)
         {
             _currentEnemys = 0;

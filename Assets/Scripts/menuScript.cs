@@ -8,6 +8,22 @@ public class menuScript : MonoBehaviour {
     private GameObject helpMenu;
     [SerializeField]
     private GameObject creditzMenu;
+    [SerializeField]
+    private GameObject PlayButton;
+    [SerializeField]
+    private GameObject helpButton;
+    [SerializeField]
+    private GameObject creditButton;
+    private Vector3 PlayCods;
+    private Vector3 helpCods;
+    private Vector3 credCods;
+    void Start()
+    {
+        
+        PlayCods = Camera.main.WorldToScreenPoint(PlayButton.transform.position);
+        helpCods = Camera.main.WorldToScreenPoint(helpButton.transform.position);
+        credCods = Camera.main.WorldToScreenPoint(creditButton.transform.position);
+    }
     void Update()
     {
         if (maninMenu.activeSelf == false)
@@ -25,16 +41,16 @@ public class menuScript : MonoBehaviour {
     {
         if (maninMenu.activeSelf == true)
         {
-            if (GUI.Button(new Rect(Screen.width /2, 260, 200, 75), ""))
+            if (GUI.Button(new Rect(PlayCods.x - 100,Screen.height-PlayCods.y - 30, 200, 50), ""))
             {
                 Application.LoadLevel("towerdefence");
             }
-            if (GUI.Button(new Rect(650, 360, 200, 75), ""))
+            if (GUI.Button(new Rect(helpCods.x - 100,  Screen.height-helpCods.y -20, 200, 60), ""))
             {
                 helpMenu.SetActive(true);
                 maninMenu.SetActive(false);
             }
-            if (GUI.Button(new Rect(585, 440, 300, 75), ""))
+            if (GUI.Button(new Rect(credCods.x - 150, Screen.height-credCods.y- 20 , 300, 60), ""))
             {
                 creditzMenu.SetActive(true);
                 maninMenu.SetActive(false);

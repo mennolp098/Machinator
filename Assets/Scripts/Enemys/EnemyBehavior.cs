@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using System;
 
 public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
+	public bool isOnStage;
+	public float health = 10;
+	public Transform thisTransform;
+	public int sort;
+
 	protected float _speed = 0.03f;
 	protected float _myMaterials = 0;
 
@@ -11,14 +16,10 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	private float counter = 1;
 	private DateTime TimeAdded;
 	private bool isFreezed;
-
-	public bool isOnStage;
-	public float health = 10;
-	public Transform thisTransform;
-	public int sort;
-
+	private bool isDead;
     private NavMeshAgent _navMesh;
 	private float oldspeed;
+
 	public int CompareTo(EnemyBehavior other)
 	{
 		if(this.health < other.health)
@@ -46,7 +47,7 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 		oldspeed = _navMesh.speed;
 	}
 	void Update () {
-		if(target)
+		if(target && !isDead)
 		{
 			if(Vector2.Distance (new Vector2(transform.position.x,transform.position.z), new Vector2(target.transform.position.x,target.transform.position.z)) < 1.5f)
 			{
@@ -64,11 +65,14 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
                     _navMesh.SetDestination(target.transform.position);
                 }
 			}
+		} else if(transform.position.y >= 0.5f) {
+			transform.Translate(Vector3.down * 4 * Time.deltaTime);
+			transform.Rotate(Vector3.right * 50 * Time.deltaTime);
 		}
 	}
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Base")
+        if (collision.gameObject.tag == "Base" && !isDead)
         {
             collision.gameObject.GetComponent<FortScript>().hit();
 			Destroy(this.gameObject);
@@ -86,16 +90,27 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	}
 	public void StopFreeze()
 	{
-		_navMesh.speed = oldspeed;
+		if(!isDead)
+		{
+			_navMesh.speed = oldspeed;
+		}
 	}
 	public void GetDmg(float dmg)
 	{
 		health -= dmg;
 		if(health <= 0)
 		{
-			GameObject.FindGameObjectWithTag("Player").GetComponent<MaterialHandler>().AddMaterials(_myMaterials);
-			Destroy(this.gameObject);
-			isOnStage = false;
+			Die();
 		}
+	}
+	private void Die()
+	{
+		GameObject.FindGameObjectWithTag("Player").GetComponent<MaterialHandler>().AddMaterials(_myMaterials);
+		audio.Play();
+		isDead = true;
+		Destroy(this.rigidbody);
+		Destroy(_navMesh);
+		Destroy(this.gameObject, 4f);
+		isOnStage = false;
 	}
 }

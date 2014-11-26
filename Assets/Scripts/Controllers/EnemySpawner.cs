@@ -51,12 +51,12 @@ public class EnemySpawner : MonoBehaviour {
         }
         if (random == 1)
         {
-			newHealth = 2.5* _wave + 5 - (_wave/4);
+			newHealth = 2.5f * _wave + 5 - (_wave/4);
 			newEnemy.GetComponent<EnemyBehavior>().SetHealth(newHealth);
         }
         if (random == 2)
         {
-			newHealth = 5 *_wave + 10 - (_wave/4);
+			newHealth = 5 * _wave + 10 - (_wave/4);
 			newEnemy.GetComponent<EnemyBehavior>().SetHealth(newHealth);
 >>>>>>> origin/master
         }

@@ -8,10 +8,12 @@ public class TowerController : MonoBehaviour {
 	public GameObject bulletPrefab;
 	public GameObject fireSmokePrefab;
 	public GameObject upgradePrefab;
+	public GameObject levelTxt;
 	public Transform cannon;
 	public Transform spawnpoint;
 	public AudioClip[] sounds = new AudioClip[0];
 
+	protected float towerLevel = 0;
 	protected float shootCooldown = 0f;
 	protected float attackDamage = 0f;
 	protected float rotationSpeed = 7f;
@@ -43,7 +45,6 @@ public class TowerController : MonoBehaviour {
 	{
 		if(!isComplete)
 		{
-			Debug.Log("Not complete");
 			if(isBuilded)
 			{
 				if(cannon.eulerAngles.x > 0.1f)
@@ -117,12 +118,27 @@ public class TowerController : MonoBehaviour {
 			totalHits += 1;
 		}
 	}
+	public void ShowLevel()
+	{
+		Vector2 pos = new Vector2(Screen.width/2-50,Screen.height/2+100);
+		GameObject obj = GameObject.Instantiate(levelTxt) as GameObject;
+		GUIText text = obj.GetComponent<GUIText>();
+		Vector2 offset = new Vector2(pos.x, pos.y);
+		if(towerLevel != 3)
+		{
+			text.text = towerLevel + "/3" + "\n" + "hits needed: " + totalHits + "/" + requiredHits + "\n" + "material per hit: " + requiredMaterials;
+		} else {
+			text.text = "Max Level";
+		}
+		text.pixelOffset = offset;
+	}
 	//upgrade function to upgrade the tower
 	protected virtual void Upgrade()
 	{
 		if(totalUpgrades == 3)
 			BecomeSuper();
 		Instantiate(upgradePrefab,transform.position,Quaternion.identity);
+		towerLevel++;
 	}
 	protected virtual void BecomeSuper()
 	{

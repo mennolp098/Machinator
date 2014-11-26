@@ -35,17 +35,6 @@ public class EnemySpawner : MonoBehaviour {
 		newEnemy.transform.parent = GameObject.FindGameObjectWithTag ("Enemys").transform;
         if(random == 0)
         {
-<<<<<<< HEAD
-            newEnemy.GetComponent<NormalEnemy>().health += 2 * _wave;
-        }
-        if (random == 1)
-        {
-            newEnemy.GetComponent<FastEnemy>().health += 2 * _wave;
-        }
-        if (random == 2)
-        {
-            newEnemy.GetComponent<StrongEnemy>().health += 5 *_wave;
-=======
 			newHealth = 3 * _wave + 7 - (_wave/4);
 			newEnemy.GetComponent<EnemyBehavior>().SetHealth(newHealth);
         }
@@ -58,7 +47,6 @@ public class EnemySpawner : MonoBehaviour {
         {
 			newHealth = 5 * _wave + 10 - (_wave/4);
 			newEnemy.GetComponent<EnemyBehavior>().SetHealth(newHealth);
->>>>>>> origin/master
         }
         if(_currentEnemys == _maxEnemys)
         {

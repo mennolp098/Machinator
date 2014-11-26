@@ -14,7 +14,7 @@ public class FastTower : TowerController {
 	{
 		totalUpgrades++;
 		requiredMaterials += 50f;
-		attackDamage += 0.5f;
+		attackDamage += 0.25f;
 		shootCooldown -= 0.05f;
 		base.Upgrade ();
 	}

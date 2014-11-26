@@ -58,6 +58,22 @@ public class TowerBuilder : MonoBehaviour {
 				_isBuilding = false;
                 _towerToBuild = -1;
 			}
+		} else if(Input.GetMouseButtonDown(1))
+		{
+			RaycastHit hit;
+			Ray ray;
+			
+			ray = Camera.main.ScreenPointToRay(new Vector2(Screen.width/2,Screen.height/2));
+			if(Physics.Raycast(ray, out hit))
+			{
+				if(hit.transform.tag == "Tower")
+				{
+					if(hit.distance <= 2f)
+					{
+						//TODO: show turret level
+					}
+				}
+			}
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha1))
 		{

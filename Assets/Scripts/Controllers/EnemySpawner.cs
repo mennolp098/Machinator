@@ -29,11 +29,13 @@ public class EnemySpawner : MonoBehaviour {
 	void spawnEnemy () 
     {
         _currentEnemys++;
+		float newHealth;
 		int random = Random.Range (0, _enemys.Length);
 		GameObject newEnemy = Instantiate(_enemys[random].gameObject,this.transform.position,this.transform.rotation) as GameObject;
 		newEnemy.transform.parent = GameObject.FindGameObjectWithTag ("Enemys").transform;
         if(random == 0)
         {
+<<<<<<< HEAD
             newEnemy.GetComponent<NormalEnemy>().health += 2 * _wave;
         }
         if (random == 1)
@@ -43,6 +45,20 @@ public class EnemySpawner : MonoBehaviour {
         if (random == 2)
         {
             newEnemy.GetComponent<StrongEnemy>().health += 5 *_wave;
+=======
+			newHealth = 3 * _wave + 7 - (_wave/4);
+			newEnemy.GetComponent<EnemyBehavior>().SetHealth(newHealth);
+        }
+        if (random == 1)
+        {
+			newHealth = 2.5* _wave + 5 - (_wave/4);
+			newEnemy.GetComponent<EnemyBehavior>().SetHealth(newHealth);
+        }
+        if (random == 2)
+        {
+			newHealth = 5 *_wave + 10 - (_wave/4);
+			newEnemy.GetComponent<EnemyBehavior>().SetHealth(newHealth);
+>>>>>>> origin/master
         }
         if(_currentEnemys == _maxEnemys)
         {

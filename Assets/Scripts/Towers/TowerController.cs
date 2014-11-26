@@ -43,17 +43,18 @@ public class TowerController : MonoBehaviour {
 	{
 		if(!isComplete)
 		{
+			Debug.Log("Not complete");
 			if(isBuilded)
 			{
-				if(cannon.eulerAngles.x <= 0f)
+				if(cannon.eulerAngles.x > 0.1f)
 				{
 					Vector3 cannonRot = cannon.eulerAngles;
 					cannonRot.x = 0;
 					cannon.eulerAngles = Vector3.Slerp(cannon.eulerAngles, cannonRot, 7f * Time.deltaTime);
 				} else {
 					isComplete = true;
-					audio.Stop();
 					audio.loop = false;
+					audio.Stop();
 				}
 			} 
 			else if(cannon.eulerAngles.x <= 30f)

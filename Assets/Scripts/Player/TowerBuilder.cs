@@ -8,6 +8,7 @@ public class TowerBuilder : MonoBehaviour {
 	public Transform spawnPoint;
 	public GameObject[] allTowers = new GameObject[0];
 	public GUIStyle textStyle;
+	public GameObject clash;
 
 	private int _towerToBuild = -1;
 	private bool _isBuilding = false;
@@ -35,6 +36,11 @@ public class TowerBuilder : MonoBehaviour {
 					if(hit.distance <= 2f)
 					{
 						hit.transform.GetComponent<TowerController>().HitTurret();
+						Vector3 eulerRot = this.transform.eulerAngles;
+						eulerRot.y -= 180;
+						Quaternion spawnRot = Quaternion.Euler(eulerRot);
+						Instantiate(clash, hit.point, spawnRot);
+
 					}
 				}
 			}
@@ -51,6 +57,22 @@ public class TowerBuilder : MonoBehaviour {
 				Destroy(_currentTower.gameObject);
 				_isBuilding = false;
                 _towerToBuild = -1;
+			}
+		} else if(Input.GetMouseButtonDown(1))
+		{
+			RaycastHit hit;
+			Ray ray;
+			
+			ray = Camera.main.ScreenPointToRay(new Vector2(Screen.width/2,Screen.height/2));
+			if(Physics.Raycast(ray, out hit))
+			{
+				if(hit.transform.tag == "Tower")
+				{
+					if(hit.distance <= 2f)
+					{
+						//TODO: show turret level
+					}
+				}
 			}
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha1))

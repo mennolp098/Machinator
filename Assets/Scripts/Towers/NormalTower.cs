@@ -15,8 +15,8 @@ public class NormalTower : TowerController {
 	{
 		totalUpgrades++;
 		requiredMaterials += 50f;
-		attackDamage += 3f;
-		shootCooldown -= 0.1f;
+		attackDamage += 0.5f;
+		shootCooldown -= 0.05f;
 		base.Upgrade ();
 	}
 	protected override void BecomeSuper ()

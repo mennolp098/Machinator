@@ -5,21 +5,24 @@ using System;
 
 public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 	public bool isOnStage;
-	public float health = 10;
+	public float health;
 	public Transform thisTransform;
 	public int sort;
+	public GameObject greenbar;
+	public GameObject redbar;
 
 	protected float _speed = 0.03f;
 	protected float _myMaterials = 0;
+	protected List<Material> allChildrenMaterials = new List<Material>();
 
 	private GameObject target;
-	private float counter = 1;
 	private DateTime TimeAdded;
+	private NavMeshAgent _navMesh;
+	private float counter = 1;
+	private float oldspeed;
 	private bool isFreezed;
 	private bool isDead;
-    private NavMeshAgent _navMesh;
-	private float oldspeed;
-
+   
 	public int CompareTo(EnemyBehavior other)
 	{
 		if(this.health < other.health)
@@ -45,6 +48,11 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
         _navMesh.SetDestination(target.transform.position);
 		_navMesh.speed += _speed;
 		oldspeed = _navMesh.speed;
+		Renderer[] allChildrenRenderers = GetComponentsInChildren<Renderer>();
+		foreach(Renderer renderer in allChildrenRenderers)
+		{
+			allChildrenMaterials.Add(renderer.material);
+		}
 	}
 	void Update () {
 		if(target && !isDead)
@@ -70,11 +78,11 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 			transform.Rotate(Vector3.right * 50 * Time.deltaTime);
 		}
 	}
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Base" && !isDead)
+		if (other.gameObject.tag == "Base" && !isDead)
         {
-            collision.gameObject.GetComponent<FortScript>().hit();
+			other.gameObject.GetComponent<FortScript>().hit();
 			Destroy(this.gameObject);
 			isOnStage = false;
         }
@@ -84,8 +92,14 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 		if(!isFreezed)
 		{
 			isFreezed = true;
-			_navMesh.speed -= 0.25f;
+			_navMesh.speed -= 0.5f;
 			Invoke("StopFreeze", 2f);
+			foreach(Material material in allChildrenMaterials)
+			{
+				Color newColor = material.color;
+				newColor.b += 1f;
+				material.color = newColor;
+			}
 		}
 	}
 	public void StopFreeze()
@@ -93,7 +107,17 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 		if(!isDead)
 		{
 			_navMesh.speed = oldspeed;
+			foreach(Material material in allChildrenMaterials)
+			{
+				Color newColor = material.color;
+				newColor.b -= 1f;
+				material.color = newColor;
+			}
 		}
+	}
+	public void SetHealth(float newHealth)
+	{
+		health = newHealth;
 	}
 	public void GetDmg(float dmg)
 	{
@@ -110,6 +134,8 @@ public class EnemyBehavior : MonoBehaviour, IComparable<EnemyBehavior> {
 		isDead = true;
 		Destroy(this.rigidbody);
 		Destroy(_navMesh);
+		Destroy(greenbar.gameObject);
+		Destroy(redbar.gameObject);
 		Destroy(this.gameObject, 4f);
 		isOnStage = false;
 	}

@@ -8,6 +8,7 @@ public class UpgradedFastTower : TowerController {
 		attackDamage = 1f;
 		requiredHits = 999f;
 		requiredMaterials = 0f;
+		towerLevel = 3;
 		isComplete = true;
 		isBuilded = true;
 	}

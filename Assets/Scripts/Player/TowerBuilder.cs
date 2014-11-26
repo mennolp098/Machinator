@@ -70,7 +70,7 @@ public class TowerBuilder : MonoBehaviour {
 				{
 					if(hit.distance <= 2f)
 					{
-						//TODO: show turret level
+						hit.transform.GetComponent<TowerController>().ShowLevel();
 					}
 				}
 			}

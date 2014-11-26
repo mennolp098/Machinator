@@ -6,6 +6,6 @@ public class RemoveParticleSystem : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_particleSystem = GetComponent<ParticleSystem>();
-		Destroy(this.gameObject, _particleSystem.duration);
+		Destroy(this.gameObject, _particleSystem.startLifetime);
 	}
 }

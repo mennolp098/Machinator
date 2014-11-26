@@ -34,15 +34,15 @@ public class EnemySpawner : MonoBehaviour {
 		newEnemy.transform.parent = GameObject.FindGameObjectWithTag ("Enemys").transform;
         if(random == 0)
         {
-            newEnemy.GetComponent<NormalEnemy>().health += 20 * _wave;
+            newEnemy.GetComponent<NormalEnemy>().health += 2 * _wave;
         }
         if (random == 1)
         {
-            newEnemy.GetComponent<FastEnemy>().health += 20* _wave;
+            newEnemy.GetComponent<FastEnemy>().health += 2 * _wave;
         }
         if (random == 2)
         {
-            newEnemy.GetComponent<StrongEnemy>().health += 50 *_wave;
+            newEnemy.GetComponent<StrongEnemy>().health += 5 *_wave;
         }
         if(_currentEnemys == _maxEnemys)
         {

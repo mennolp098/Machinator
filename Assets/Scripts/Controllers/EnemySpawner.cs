@@ -35,7 +35,6 @@ public class EnemySpawner : MonoBehaviour {
 		newEnemy.transform.parent = GameObject.FindGameObjectWithTag ("Enemys").transform;
         if (random == 0)
         {
-            newEnemy.GetComponent<StrongEnemy>().health += 5 *_wave;
 			newHealth = 3 * _wave + 7 - (_wave/4);
 			newEnemy.GetComponent<EnemyBehavior>().SetHealth(newHealth);
         }
@@ -51,6 +50,10 @@ public class EnemySpawner : MonoBehaviour {
         }
         if(_currentEnemys == _maxEnemys)
         {
+            if(_wave == 10)
+            {
+                Application.LoadLevel("win");
+            }
             _currentEnemys = 0;
             _wave++;
             _maxEnemys += _enemyMultiplayer * _wave;

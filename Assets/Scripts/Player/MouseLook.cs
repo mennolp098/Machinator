@@ -34,16 +34,29 @@ public class MouseLook : MonoBehaviour {
     }
 	void Update ()
 	{
-        float directionX = Input.GetAxis ("Horizontal");
+        
+		Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+		movement = transform.TransformDirection(movement);
+		movement *= speed;
+		movement.y = -3;
+		CharacterController controller = GetComponent<CharacterController>();
+		controller.Move(movement*Time.deltaTime);
+		//transform.position += movement * Time.deltaTime;
+		/*
+		float directionX = Input.GetAxis ("Horizontal");
 		float directionY = Input.GetAxis ("Vertical");
 		if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
 		{
-			transform.position += transform.forward*directionY * speed * Time.deltaTime;
+			Vector3 movement = new Vector3(transform.forward.x,0,transform.forward.z)*directionY * speed * Time.deltaTime;
+			movement.y = 0f;
+			transform.position += movement;
 		}  
 		if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
 		{
-			transform.position += transform.right*directionX * speed * Time.deltaTime;
-		}
+			Vector3 movement = new Vector3(transform.right.x,0,transform.right.z)*directionX * speed * Time.deltaTime;
+			movement.y = 0f;
+			transform.position += movement;
+		} */
 		if (axes == RotationAxes.MouseXAndY)
 		{
 			float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;

@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class MaterialHandler : MonoBehaviour {
-	private float _materials = 10000f;
+	private float _materials = 480f;
 	public float GetMaterials()
 	{
 		return _materials;

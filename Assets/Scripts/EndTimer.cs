@@ -15,6 +15,7 @@ public class EndTimer : MonoBehaviour {
         timer -= 1 * Time.deltaTime;
         if(timer <= 0)
         {
+            Screen.lockCursor = false;
             Application.LoadLevel("Menu");
         }
 	}

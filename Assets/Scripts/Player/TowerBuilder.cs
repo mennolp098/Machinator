@@ -33,7 +33,7 @@ public class TowerBuilder : MonoBehaviour {
 			{
 				if(hit.transform.tag == "Tower")
 				{
-					if(hit.distance <= 2f)
+					if(hit.distance <= 1f)
 					{
 						hit.transform.GetComponent<TowerController>().HitTurret();
 						Vector3 eulerRot = this.transform.eulerAngles;
@@ -64,11 +64,12 @@ public class TowerBuilder : MonoBehaviour {
 			Ray ray;
 			
 			ray = Camera.main.ScreenPointToRay(new Vector2(Screen.width/2,Screen.height/2));
+			ray.origin = Camera.main.transform.position;
 			if(Physics.Raycast(ray, out hit))
 			{
 				if(hit.transform.tag == "Tower")
 				{
-					if(hit.distance <= 2f)
+					if(hit.distance <= 1f)
 					{
 						hit.transform.GetComponent<TowerController>().ShowLevel();
 					}

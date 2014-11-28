@@ -47,22 +47,11 @@ public class TowerController : MonoBehaviour {
 		{
 			if(isBuilded)
 			{
-				if(cannon.eulerAngles.x > 0.1f)
-				{
-					Vector3 cannonRot = cannon.eulerAngles;
-					cannonRot.x = 0;
-					cannon.eulerAngles = Vector3.Slerp(cannon.eulerAngles, cannonRot, 7f * Time.deltaTime);
-				} else {
-					isComplete = true;
-					audio.loop = false;
-					audio.Stop();
-				}
+				RotateBack();
 			} 
-			else if(cannon.eulerAngles.x <= 30f)
+			else
 			{
-				Vector3 cannonRot = cannon.eulerAngles;
-				cannonRot.x = 30;
-				cannon.eulerAngles = Vector3.Slerp(cannon.eulerAngles, cannonRot, 7f * Time.deltaTime);
+				RotateDown();
 			}
 			if(requiredHits <= totalHits)
 			{
@@ -72,39 +61,69 @@ public class TowerController : MonoBehaviour {
 		}
 		else
 		{
-			//check if enemys are in the list to attack
-			if(_enemyScripts.Count != 0)
+			CheckTargets();
+			CheckUpgrades();
+		}
+	}
+	private void CheckUpgrades()
+	{
+		//check if possible to upgrade
+		if(totalUpgrades != 3)
+		{
+			if(requiredHits <= totalHits)
 			{
-				for(int i = 0; i < _enemyScripts.Count; i++)
+				requiredHits += 3f;
+				Upgrade();
+			}
+		}
+	}
+	private void CheckTargets()
+	{
+		//check if enemys are in the list to attack
+		if(_enemyScripts.Count != 0)
+		{
+			for(int i = 0; i < _enemyScripts.Count; i++)
+			{
+				//check first enemy in list
+				if(_enemyScripts[0].thisTransform)
 				{
-					//check first enemy in list
-					if(_enemyScripts[0].thisTransform)
+					Vector3 relativePos = _enemyScripts[0].thisTransform.position - cannon.position;
+					Quaternion enemyLookAt = Quaternion.LookRotation(relativePos);
+					//check rotation relative to the pos to slerp towards enemypos
+					cannon.rotation = Quaternion.Slerp(cannon.rotation, enemyLookAt, Time.deltaTime * rotationSpeed);
+					if (Time.time > _shootCoolDown) 
 					{
-						Vector3 relativePos = _enemyScripts[0].thisTransform.position - cannon.position;
-						Quaternion enemyLookAt = Quaternion.LookRotation(relativePos);
-						//check rotation relative to the pos to slerp towards enemypos
-						cannon.rotation = Quaternion.Slerp(cannon.rotation, enemyLookAt, Time.deltaTime * rotationSpeed);
-						if (Time.time > _shootCoolDown) 
-						{
-							Shoot ();
-						}
-					}
-					//if enemy is not onstage remove out of list
-					if(!_enemyScripts[i].isOnStage)
-					{
-						RemoveTarget(_enemyScripts[i]);
+						Shoot ();
 					}
 				}
-			}
-			//check if possible to upgrade
-			if(totalUpgrades != 3)
-			{
-				if(requiredHits <= totalHits)
+				//if enemy is not onstage remove out of list
+				if(!_enemyScripts[i].isOnStage)
 				{
-					requiredHits += 3f;
-					Upgrade();
+					RemoveTarget(_enemyScripts[i]);
 				}
 			}
+		}
+	}
+	private void RotateDown()
+	{
+		if(cannon.eulerAngles.x < 30f)
+		{
+			Vector3 cannonRot = cannon.eulerAngles;
+			cannonRot.x = 30;
+			cannon.eulerAngles = Vector3.Slerp(cannon.eulerAngles, cannonRot, 7f * Time.deltaTime);
+		}
+	}
+	public void RotateBack()
+	{
+		if(cannon.eulerAngles.x > 0.1f)
+		{
+			Vector3 cannonRot = cannon.eulerAngles;
+			cannonRot.x = 0;
+			cannon.eulerAngles = Vector3.Slerp(cannon.eulerAngles, cannonRot, 7f * Time.deltaTime);
+		} else {
+			isComplete = true;
+			audio.loop = false;
+			audio.Stop();
 		}
 	}
 	public void HitTurret()
